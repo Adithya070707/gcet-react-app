@@ -1,5 +1,4 @@
 import React from "react";
-
-export default function Cart() {
-  return <div>My Cart</div>;
+export default function Footer() {
+  return <div> &copy; 2005. All rights Reserved.</div>;
 }
