@@ -1,8 +1,8 @@
- import React, { useState } from "react";
+ import React, { useState, useContext } from "react";
 import { AppContext } from "../App";
-import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+
 export default function Register() {
   const { users, setUsers } = useContext(AppContext);
   const [user, setUser] = useState({});
@@ -10,13 +10,18 @@ export default function Register() {
   const API = import.meta.env.VITE_API_URL;
 
   const handleSubmit = async () => {
-    //setUsers([...users, user]);
+    if (!user.name || !user.email || !user.pass) {
+      alert("Please fill all fields.");
+      return;
+    }
+
     try {
       const url = `${API}/users/register`;
       await axios.post(url, user);
       Navigate("/login");
     } catch (err) {
       console.log(err);
+      alert("Registration failed. Please check the console for details.");
     }
   };
 
@@ -45,13 +50,14 @@ export default function Register() {
           onChange={(e) => setUser({ ...user, pass: e.target.value })}
         />
       </p>
+
       <button onClick={handleSubmit}>Submit</button>
 
       <hr />
       {users &&
-        users.map((value) => (
-          <li>
-            {value.name}-{value.email}-{value.pass}
+        users.map((value, index) => (
+          <li key={index}>
+            {value.name} - {value.email} - {value.pass}
           </li>
         ))}
     </div>
